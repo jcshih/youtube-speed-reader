@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 
-class About extends Component {
+class Video extends Component {
 
   render() {
     return (
       <div>
-        About
+        Video
       </div>
     );
   }
 }
 
-export default About;
+export default Video;

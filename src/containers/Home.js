@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { Component } from 'react';
+import UrlInputContainer from '../containers/UrlInputContainer';
 
-class Home extends React.Component {
+class Home extends Component {
+
   render() {
     return (
       <div>
-        Home
+        <UrlInputContainer />
       </div>
     );
   }
