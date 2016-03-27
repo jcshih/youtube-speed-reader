@@ -1,18 +1,21 @@
 import { expect } from 'chai';
 import { push, replace } from 'react-router-redux';
 import thunk from 'redux-thunk';
+import nock from 'nock';
 import configureMockStore from 'redux-mock-store';
 import {
   setId,
-  setError,
-  resetError,
+  setLoading,
+  setCaptions,
   parseIdFromUrl,
-  parseIdFromPath
+  parseIdFromPath,
+  fetchCaptions
 } from '../../../src/actions/youtube';
 import {
   SET_ID,
-  SET_ERROR,
-  RESET_ERROR
+  SET_LOADING,
+  SET_CAPTIONS,
+  SET_ID_ERROR
 } from '../../../src/constants';
 
 const middlewares = [ thunk ];
@@ -29,26 +32,32 @@ describe('youtube actions', () => {
     });
   });
 
-  it('handles setError', () => {
+  it('handles setLoading', () => {
     expect(
-      setError('error message')
+      setLoading(true)
     ).to.eql({
-      type: SET_ERROR,
-      errorMessage: 'error message'
+      type: SET_LOADING,
+      isLoading: true
     });
   });
 
-  it('handles resetError', () => {
+  it('handles setCaptions', () => {
+    const captions = {
+      transcript: {
+        text: []
+      }
+    };
+
     expect(
-      resetError()
+      setCaptions(captions)
     ).to.eql({
-      type: RESET_ERROR
+      type: SET_CAPTIONS,
+      captions
     });
   });
 
   it('handles parseIdFromUrl success', (done) => {
     const expectedActions = [
-      { type: SET_ID, id: 'dQw4w9WgXcQ' },
       push('/v/dQw4w9WgXcQ')
     ];
     const store = mockStore({});
@@ -64,7 +73,7 @@ describe('youtube actions', () => {
 
   it('handles parseIdFromUrl failure', (done) => {
     const expectedActions = [
-      { type: SET_ERROR, errorMessage: 'Invalid YouTube URL.' }
+      { type: SET_ID_ERROR, errorMessage: 'Invalid YouTube URL.' }
     ];
     const store = mockStore({});
 
@@ -79,7 +88,6 @@ describe('youtube actions', () => {
 
   it('handles parseIdFromPath success', (done) => {
     const expectedActions = [
-      { type: SET_ID, id: 'dQw4w9WgXcQ' },
       replace('/v/dQw4w9WgXcQ')
     ];
     const store = mockStore({});
@@ -96,7 +104,7 @@ describe('youtube actions', () => {
   it('handles parseIdFromPath failure', (done) => {
     const expectedActions = [
       replace('/'),
-      { type: SET_ERROR, errorMessage: 'Invalid YouTube URL.' }
+      { type: SET_ID_ERROR, errorMessage: 'Invalid YouTube URL.' }
     ];
     const store = mockStore({});
 

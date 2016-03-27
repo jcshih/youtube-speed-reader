@@ -1,48 +1,64 @@
-import { SET_ID, SET_ERROR, RESET_ERROR } from '../constants';
-import { extractVideoId } from '../util';
+import fetch from 'isomorphic-fetch';
 import { push, replace } from 'react-router-redux';
+import {
+  SET_ID,
+  SET_LOADING,
+  SET_CAPTIONS
+} from '../constants';
+import { extractVideoId, getCaptions } from '../util';
+import { setIdError, setCaptionsError } from './errors';
+
+const checkStatus = (res) => {
+  if (res.status >= 200 && res.status < 300) {
+    return res;
+  } else {
+    throw res;
+  }
+};
 
 const setId = (id) => ({
   type: SET_ID,
   id
 });
 
-const setError = (errorMessage) => ({
-  type: SET_ERROR,
-  errorMessage
+const setLoading = (isLoading) => ({
+  type: SET_LOADING,
+  isLoading
 });
 
-const resetError = () => ({
-  type: RESET_ERROR
+const setCaptions = (captions) => ({
+  type: SET_CAPTIONS,
+  captions
 });
 
 const parseIdFromUrl = (url) => (dispatch) => {
   return extractVideoId(url)
     .then(id => {
-      dispatch(setId(id));
       dispatch(push(`/v/${id}`));
     })
     .catch(err => {
-      dispatch(setError(err));
+      dispatch(setIdError(err));
     });
 };
 
 const parseIdFromPath = (path) => (dispatch) => {
   return extractVideoId(path)
     .then(id => {
-      dispatch(setId(id));
       dispatch(replace(`/v/${id}`));
     })
     .catch(err => {
       dispatch(replace('/'));
-      dispatch(setError(err));
+      dispatch(setIdError(err));
+    });
+};
+
     });
 };
 
 export {
   setId,
-  setError,
-  resetError,
+  setLoading,
+  setCaptions,
   parseIdFromUrl,
-  parseIdFromPath
+  parseIdFromPath,
 };

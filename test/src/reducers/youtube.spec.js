@@ -2,8 +2,8 @@ import { expect } from 'chai';
 import { youtube } from '../../../src/reducers';
 import {
   SET_ID,
-  SET_ERROR,
-  RESET_ERROR
+  SET_LOADING,
+  SET_CAPTIONS
 } from '../../../src/constants';
 
 describe('youtube reducer', () => {
@@ -14,7 +14,6 @@ describe('youtube reducer', () => {
     ).to.eql({
       id: null,
       isLoading: false,
-      error: null,
       captions: null
     });
   });
@@ -23,7 +22,6 @@ describe('youtube reducer', () => {
     const state = {
       id: null,
       isLoading: false,
-      error: null,
       captions: null
     };
     const nextState = {
@@ -39,40 +37,43 @@ describe('youtube reducer', () => {
     ).to.eql(nextState);
   });
 
-  it('handles SET_ERROR', () => {
+  it('handles SET_LOADING', () => {
     const state = {
       id: 5,
       isLoading: false,
-      error: null,
       captions: null
     };
     const nextState = {
       ...state,
-      error: 'error message'
+      isLoading: true
     };
 
     expect(
-      youtube(state, {
-        type: SET_ERROR,
-        errorMessage: 'error message'
-      })
+      youtube(state, { type: SET_LOADING, isLoading: true })
     ).to.eql(nextState);
+    expect(
+      youtube(nextState, { type: SET_LOADING, isLoading: false })
+    ).to.eql(state);
   });
 
-  it('handles RESET_ERROR', () => {
+  it('handles SET_CAPTIONS', () => {
+    const captions = {
+      transcript: {
+        text: []
+      }
+    };
     const state = {
       id: 5,
       isLoading: false,
-      error: 'error message',
       captions: null
     };
     const nextState = {
       ...state,
-      error: null
+      captions
     };
 
     expect(
-      youtube(state, { type: RESET_ERROR })
+      youtube(state, { type: SET_CAPTIONS, captions })
     ).to.eql(nextState);
   });
 

@@ -1,9 +1,12 @@
-import { SET_ID, SET_ERROR, RESET_ERROR } from '../constants';
+import {
+  SET_ID,
+  SET_LOADING,
+  SET_CAPTIONS
+} from '../constants';
 
 const initialState = {
   id: null,
   isLoading: false,
-  error: null,
   captions: null
 };
 
@@ -15,16 +18,16 @@ const youtube = (state = initialState, action) => {
         id: action.id
       };
 
-    case SET_ERROR:
+    case SET_LOADING:
       return {
         ...state,
-        error: action.errorMessage
+        isLoading: action.isLoading
       };
 
-    case RESET_ERROR:
+    case SET_CAPTIONS:
       return {
         ...state,
-        error: null
+        captions: action.captions
       };
 
     default:

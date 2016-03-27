@@ -7,12 +7,12 @@ import { syncHistoryWithStore } from 'react-router-redux';
 import routes from './routes';
 import configureStore from './store/configureStore';
 import Root from './containers/Root';
-import { resetError } from './actions/youtube';
+import { resetErrors } from './actions/errors';
 
 const store = configureStore(browserHistory);
 const history = syncHistoryWithStore(browserHistory, store);
 
-history.listen(() => store.dispatch(resetError()));
+history.listen(() => store.dispatch(resetErrors()));
 
 render((
   <Root
