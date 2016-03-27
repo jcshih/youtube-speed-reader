@@ -4,7 +4,7 @@ class UrlInput extends Component {
 
   static propTypes = {
     handleSubmit: PropTypes.func.isRequired,
-    resetErrors: PropTypes.func.isRequired,
+    resetError: PropTypes.func.isRequired,
     error: PropTypes.string,
     autoFocus: PropTypes.bool
   };
@@ -24,10 +24,10 @@ class UrlInput extends Component {
 
   handleKeyPress(e) {
     const { url } = this.state;
-    const { handleSubmit, resetErrors } = this.props;
+    const { handleSubmit, resetError } = this.props;
     if (e.key === 'Enter' && url.length > 0) {
       this.setState({ url: '' });
-      resetErrors();
+      resetError();
       handleSubmit(url);
     }
   }

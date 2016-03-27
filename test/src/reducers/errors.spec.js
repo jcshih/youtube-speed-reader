@@ -2,6 +2,7 @@ import { expect } from 'chai';
 import { errors } from '../../../src/reducers';
 import {
   SET_ID_ERROR,
+  RESET_ID_ERROR,
   SET_CAPTIONS_ERROR,
   RESET_ERRORS
 } from '../../../src/constants';
@@ -32,6 +33,21 @@ describe('errors reducer', () => {
         type: SET_ID_ERROR,
         errorMessage: 'id error'
       })
+    ).to.eql(nextState);
+  });
+
+  it('handles RESET_ID_ERROR', () => {
+    const state = {
+      idError: 'id error',
+      captionsError: 'captions error'
+    };
+    const nextState = {
+      ...state,
+      idError: null
+    };
+
+    expect(
+      errors(state, { type: RESET_ID_ERROR })
     ).to.eql(nextState);
   });
 

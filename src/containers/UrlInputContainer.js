@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import UrlInput from '../components/UrlInput';
 import { parseIdFromUrl } from '../actions/youtube';
-import { resetErrors } from '../actions/errors';
+import { resetIdError } from '../actions/errors';
 
 const mapStateToProps = (state) => ({
   error: state.errors.idError
@@ -11,7 +11,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   handleSubmit: url => dispatch(parseIdFromUrl(url)),
-  resetErrors: () => dispatch(resetErrors())
+  resetError: () => dispatch(resetIdError())
 });
 
 const UrlInputContainer = connect(mapStateToProps, mapDispatchToProps)(UrlInput);

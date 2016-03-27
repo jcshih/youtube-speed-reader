@@ -1,11 +1,13 @@
 import { expect } from 'chai';
 import {
   setIdError,
+  resetIdError,
   setCaptionsError,
   resetErrors
 } from '../../../src/actions/errors';
 import {
   SET_ID_ERROR,
+  RESET_ID_ERROR,
   SET_CAPTIONS_ERROR,
   RESET_ERRORS
 } from '../../../src/constants';
@@ -18,6 +20,14 @@ describe('errors actions', () => {
     ).to.eql({
       type: SET_ID_ERROR,
       errorMessage: 'id error'
+    });
+  });
+
+  it('handles resetIdError', () => {
+    expect(
+      resetIdError()
+    ).to.eql({
+      type: RESET_ID_ERROR
     });
   });
 

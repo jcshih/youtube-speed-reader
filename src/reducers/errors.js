@@ -1,5 +1,6 @@
 import {
   SET_ID_ERROR,
+  RESET_ID_ERROR,
   SET_CAPTIONS_ERROR,
   RESET_ERRORS
 } from '../constants';
@@ -15,6 +16,12 @@ const errors = (state = initialState, action) => {
       return {
         ...state,
         idError: action.errorMessage
+      };
+
+    case RESET_ID_ERROR:
+      return {
+        ...state,
+        idError: null
       };
 
     case SET_CAPTIONS_ERROR:
