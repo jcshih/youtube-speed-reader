@@ -47,6 +47,9 @@ module.exports = {
           'postcss'
         ]
       }, {
+        test: /\.json$/,
+        loader: 'json'
+      }, {
         test: /\.svg/,
         loader: 'url?limit=' + embedFileSize + '&mimetype=image/svg+xml'
       }, {

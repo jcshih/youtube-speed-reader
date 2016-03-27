@@ -60,6 +60,9 @@ module.exports = _.extend({}, config, {
         test: /\.css$/,
         loader: ExtractTextPlugin.extract('style', 'css?modules&localIdentName=[name]---[local]---[hash:base64:5]!postcss')
       }, {
+        test: /\.json$/,
+        loader: 'json'
+      }, {
         test: /\.svg/,
         loader: 'url?limit=' + embedFileSize + '&mimetype=image/svg+xml'
       }, {

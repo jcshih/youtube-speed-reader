@@ -15,7 +15,8 @@ import {
   SET_ID,
   SET_LOADING,
   SET_CAPTIONS,
-  SET_ID_ERROR
+  SET_ID_ERROR,
+  SET_CAPTIONS_ERROR
 } from '../../../src/constants';
 
 const middlewares = [ thunk ];
@@ -110,6 +111,54 @@ describe('youtube actions', () => {
 
     store.dispatch(
       parseIdFromPath('youtube.com/watch')
+    ).then(() => {
+      expect(
+        store.getActions()
+      ).to.eql(expectedActions);
+    }).then(done).catch(done);
+  });
+
+  it('handles fetchCaptions success', (done) => {
+    const captions = {
+      transcript: {
+        text: []
+      }
+    };
+
+    nock('http://localhost:8000')
+      .get('/api/captions/FxSmBbXSDl0')
+      .reply(200, captions);
+
+    const expectedActions = [
+      { type: SET_LOADING, isLoading: true },
+      { type: SET_CAPTIONS, captions },
+      { type: SET_LOADING, isLoading: false },
+    ];
+    const store = mockStore({});
+
+    store.dispatch(
+      fetchCaptions('FxSmBbXSDl0')
+    ).then(() => {
+      expect(
+        store.getActions()
+      ).to.eql(expectedActions);
+    }).then(done).catch(done);
+  });
+
+  it('handles fetchCaptions failure', (done) => {
+    nock('http://localhost:8000')
+      .get('/api/captions/FxSmBbXSDl0')
+      .reply(500, { error: 'error' });
+
+    const expectedActions = [
+      { type: SET_LOADING, isLoading: true },
+      { type: SET_CAPTIONS_ERROR, errorMessage: 'error' },
+      { type: SET_LOADING, isLoading: false },
+    ];
+    const store = mockStore({});
+
+    store.dispatch(
+      fetchCaptions('FxSmBbXSDl0')
     ).then(() => {
       expect(
         store.getActions()

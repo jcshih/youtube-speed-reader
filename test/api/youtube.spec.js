@@ -124,7 +124,6 @@ describe('youtube api', () => {
       const asr = fs.readFileSync(
         './test/data/V7Er7PZqycM_asr', 'utf8'
       );
-      console.log(hostname, pathname);
       nock(hostname)
         .get(`${pathname}&track=asr&kind=asr&asrs=1&lang=en`)
         .reply(200, asr);

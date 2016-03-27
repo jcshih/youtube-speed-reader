@@ -6,7 +6,7 @@ class Home extends Component {
   render() {
     return (
       <div>
-        <UrlInputContainer />
+        <UrlInputContainer autoFocus={true} />
       </div>
     );
   }

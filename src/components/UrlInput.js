@@ -5,7 +5,12 @@ class UrlInput extends Component {
   static propTypes = {
     handleSubmit: PropTypes.func.isRequired,
     resetErrors: PropTypes.func.isRequired,
-    error: PropTypes.string
+    error: PropTypes.string,
+    autoFocus: PropTypes.bool
+  };
+
+  static defaultProps = {
+    autoFocus: false
   };
 
   constructor(props) {
@@ -28,12 +33,12 @@ class UrlInput extends Component {
   }
 
   render() {
-    const { error } = this.props;
+    const { error, autoFocus } = this.props;
 
     return (
       <div>
         <input
-            autoFocus
+            autoFocus={autoFocus}
             type="text"
             value={this.state.url}
             onChange={this.handleChange.bind(this)}

@@ -6,7 +6,7 @@ const GET_VIDEO_INFO_URL = 'http://www.youtube.com/get_video_info?video_id='
 const GET_CAPTIONS_URL = 'http://www.youtube.com/api/timedtext?lang=en&v=';
 
 const checkStatus = (res) => {
-  if (res.status >= 200 && res.status < 300) {
+  if (res.status >= 200 && res.status < 400) {
     return res;
   } else {
     const error = new Error(res.statusText);

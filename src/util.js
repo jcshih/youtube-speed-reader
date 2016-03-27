@@ -1,3 +1,5 @@
+import fetch from 'isomorphic-fetch';
+
 const youtubeUrlRegex = /^.*(?:youtu.be\/|v\/|e\/|u\/\w+\/|embed\/|v=)([^#\&\?]*).*/;
 
 const extractVideoId = (url) => {

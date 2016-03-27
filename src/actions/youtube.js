@@ -1,20 +1,13 @@
 import fetch from 'isomorphic-fetch';
 import { push, replace } from 'react-router-redux';
+import Config from '../../config.js';
 import {
   SET_ID,
   SET_LOADING,
   SET_CAPTIONS
 } from '../constants';
-import { extractVideoId, getCaptions } from '../util';
+import { extractVideoId } from '../util';
 import { setIdError, setCaptionsError } from './errors';
-
-const checkStatus = (res) => {
-  if (res.status >= 200 && res.status < 300) {
-    return res;
-  } else {
-    throw res;
-  }
-};
 
 const setId = (id) => ({
   type: SET_ID,
@@ -52,6 +45,25 @@ const parseIdFromPath = (path) => (dispatch) => {
     });
 };
 
+const fetchCaptions = (id) => (dispatch) => {
+  dispatch(setLoading(true));
+
+  return fetch(`${Config.serverUrl}/api/captions/${id}`)
+    .then(res => Promise.all([ res.status, res.json() ]))
+    .then(([ status, data ]) => {
+      if (status >= 200 && status < 400) {
+        return data;
+      } else {
+        throw data.error;
+      }
+    })
+    .then(captions => {
+      dispatch(setCaptions(captions));
+      dispatch(setLoading(false));
+    })
+    .catch(err => {
+      dispatch(setCaptionsError(err));
+      dispatch(setLoading(false));
     });
 };
 
@@ -61,4 +73,5 @@ export {
   setCaptions,
   parseIdFromUrl,
   parseIdFromPath,
+  fetchCaptions
 };
