@@ -1,0 +1,82 @@
+import fetch from 'isomorphic-fetch';
+import _ from 'lodash';
+import { toJson } from 'xml2json';
+
+const GET_VIDEO_INFO_URL = 'http://www.youtube.com/get_video_info?video_id='
+const GET_CAPTIONS_URL = 'http://www.youtube.com/api/timedtext?lang=en&v=';
+
+const checkStatus = (res) => {
+  if (res.status >= 200 && res.status < 300) {
+    return res;
+  } else {
+    const error = new Error(res.statusText);
+    error.response = res;
+    throw error;
+  }
+};
+
+const getCaptionInfo = (id) => {
+  return fetch(`${GET_VIDEO_INFO_URL}${id}`)
+    .then(checkStatus)
+    .then(res => res.text())
+    .then(text => {
+      const params = text.split('&');
+      const ttsurl = params.find(param =>
+        param.startsWith('ttsurl')
+      );
+      const captionTracks = params.find(param =>
+        param.startsWith('caption_tracks')
+      );
+
+      if (ttsurl && captionTracks) {
+        return ttsurl;
+      } else {
+        throw 'No captions available.';
+      }
+    })
+    .then(ttsurl => {
+      return decodeURIComponent(ttsurl.split('=')[1]);
+    })
+    .catch(err => {
+      throw err;
+    });
+};
+
+const getCaptions = (id) => {
+  return fetch(`${GET_CAPTIONS_URL}${id}`)
+    .then(checkStatus)
+    .then(res => res.text())
+    .then(captions => captions)
+    .catch(err => {
+      throw err;
+    });
+};
+
+const getAsr = (ttsurl) => {
+  return fetch(`${ttsurl}&track=asr&kind=asr&asrs=1&lang=en`)
+    .then(checkStatus)
+    .then(res => res.text())
+    .then(asr => asr)
+    .catch(err => {
+      throw err;
+    });
+};
+
+const convertCaptionsToJson = (xml) => {
+  const captions = toJson(xml, { object: true, sanitize: false });
+  return _.update(captions, 'transcript.text', text => {
+    return _.map(text, caption => ({
+      ...caption,
+      $t: caption['$t'].replace(/\&\#(\d+)\;/g, (match, code) => {
+        return String.fromCharCode(Number(code));
+      })
+    }));
+  });
+};
+
+export {
+  getCaptionInfo,
+  getCaptions,
+  getAsr,
+  convertCaptionsToJson
+};
