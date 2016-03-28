@@ -1,7 +1,12 @@
 import { expect } from 'chai';
 import fs from 'fs';
 import nock from 'nock';
-import { getCaptionInfo, getCaptions, getAsr } from '../../api/youtube';
+import {
+  getCaptionInfo,
+  getCaptions,
+  getAsr,
+  convertCaptionsToJson
+} from '../../api/youtube';
 
 describe('youtube api', () => {
 
@@ -162,6 +167,21 @@ describe('youtube api', () => {
       return expect(
         getAsr(ttsurl)
       ).to.be.rejectedWith(Error);
+    });
+
+  });
+
+  describe('convertCaptionsToJson', () => {
+
+    it('decodes HTML/ascii codes', () => {
+      const xml = fs.readFileSync(
+        './test/data/FxSmBbXSDl0_captions', 'utf8'
+      );
+      const json = require('../data/FxSmBbXSDl0_captions.json');
+
+      expect(
+        convertCaptionsToJson(xml)
+      ).to.eql(json);
     });
 
   });

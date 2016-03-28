@@ -20,15 +20,14 @@ const APIRouter = () => {
         if (captions.length > 0) {
           res.json(convertCaptionsToJson(captions));
         } else {
-          return ttsurl;
-        }
-      })
-      .then(ttsurl => getAsr(ttsurl))
-      .then(asr => {
-        if (asr.length > 0) {
-          res.json(convertCaptionsToJson(asr));
-        } else {
-          throw 'Failed to retrieve captions.';
+          getAsr(ttsurl)
+            .then(asr => {
+              if (asr.length > 0) {
+                res.json(convertCaptionsToJson(asr));
+              } else {
+                throw 'Failed to retrieve captions.';
+              }
+            });
         }
       })
       .catch(err => {

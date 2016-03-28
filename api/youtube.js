@@ -67,10 +67,25 @@ const convertCaptionsToJson = (xml) => {
   return _.update(captions, 'transcript.text', text => {
     return _.map(text, caption => ({
       ...caption,
-      $t: caption['$t'].replace(/\&\#(\d+)\;/g, (match, code) => {
-        return String.fromCharCode(Number(code));
-      })
+      $t: decode(caption['$t'])
     }));
+  });
+};
+
+const decode = (str) => {
+  return str.replace(/\&\#(\d+)\;/g, (match, code) => {
+    return String.fromCharCode(Number(code));
+  }).replace(/(\&[a-z]{1,4}\;)/g, (match, code) => {
+    return {
+      '&lt;'   : '<',
+      '&gt;'   : '>',
+      '&#40;'  : '(',
+      '&#41;'  : ')',
+      '&#35;'  : '#',
+      '&amp;'  : '&',
+      '&quot;' : '"',
+      '&apos;' : "'"
+    }[code] || code;
   });
 };
 

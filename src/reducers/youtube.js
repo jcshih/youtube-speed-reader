@@ -7,7 +7,11 @@ import {
 const initialState = {
   id: null,
   isLoading: false,
-  captions: null
+  captions: {
+    transcript: {
+      text: []
+    }
+  }
 };
 
 const youtube = (state = initialState, action) => {

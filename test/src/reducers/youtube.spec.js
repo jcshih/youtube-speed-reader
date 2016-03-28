@@ -14,7 +14,11 @@ describe('youtube reducer', () => {
     ).to.eql({
       id: null,
       isLoading: false,
-      captions: null
+      captions: {
+        transcript: {
+          text: []
+        }
+      }
     });
   });
 
