@@ -1,0 +1,9 @@
+.captions {
+  height: 500px;
+  width: 800px;
+  overflow-y: scroll;
+}
+
+.activeTime {
+  background: yellow;
+}

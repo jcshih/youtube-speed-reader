@@ -67,6 +67,8 @@ const convertCaptionsToJson = (xml) => {
   return _.update(captions, 'transcript.text', text => {
     return _.map(text, caption => ({
       ...caption,
+      start: Number(caption.start),
+      dur: Number(caption.dur),
       $t: decode(caption['$t'])
     }));
   });

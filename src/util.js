@@ -16,4 +16,10 @@ const extractVideoId = (url) => {
   return promise;
 };
 
-export { extractVideoId };
+const delay = () => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => resolve(), 250);
+  });
+};
+
+export { extractVideoId, delay };
