@@ -130,7 +130,7 @@ describe('youtube api', () => {
         './test/data/V7Er7PZqycM_asr', 'utf8'
       );
       nock(hostname)
-        .get(`${pathname}&track=asr&kind=asr&asrs=1&lang=en`)
+        .get(`${pathname}&format=1`)
         .reply(200, asr);
 
       return expect(
@@ -147,7 +147,7 @@ describe('youtube api', () => {
         './test/data/FxSmBbXSDl0_asr', 'utf8'
       );
       nock(hostname)
-        .get(`${pathname}&track=asr&kind=asr&asrs=1&lang=en`)
+        .get(`${pathname}&format=1`)
         .reply(200, asr);
 
       return expect(

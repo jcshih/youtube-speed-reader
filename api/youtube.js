@@ -2,7 +2,7 @@ import fetch from 'isomorphic-fetch';
 import _ from 'lodash';
 import { toJson } from 'xml2json';
 
-const GET_VIDEO_INFO_URL = 'http://www.youtube.com/get_video_info?video_id='
+const GET_VIDEO_INFO_URL = 'http://www.youtube.com/get_video_info?video_id=';
 const GET_CAPTIONS_URL = 'http://www.youtube.com/api/timedtext?lang=en&v=';
 
 const checkStatus = (res) => {
@@ -21,21 +21,20 @@ const getCaptionInfo = (id) => {
     .then(res => res.text())
     .then(text => {
       const params = text.split('&');
-      const ttsurl = params.find(param =>
-        param.startsWith('ttsurl')
-      );
       const captionTracks = params.find(param =>
         param.startsWith('caption_tracks')
       );
 
-      if (ttsurl && captionTracks) {
-        return ttsurl;
+      if (captionTracks) {
+        return captionTracks;
       } else {
         throw 'No captions available.';
       }
     })
     .then(ttsurl => {
-      return decodeURIComponent(ttsurl.split('=')[1]);
+      const params = decodeURIComponent(ttsurl.split('=')[1]).split('&');
+      const u = params.find(param => param.startsWith('u='));
+      return decodeURIComponent(u.split('=')[1]);
     })
     .catch(err => {
       throw err;
@@ -53,7 +52,7 @@ const getCaptions = (id) => {
 };
 
 const getAsr = (ttsurl) => {
-  return fetch(`${ttsurl}&track=asr&kind=asr&asrs=1&lang=en`)
+  return fetch(`${ttsurl}&format=1`)
     .then(checkStatus)
     .then(res => res.text())
     .then(asr => asr)
