@@ -6,7 +6,6 @@ import UrlInputContainer from '../containers/UrlInputContainer';
 class App extends Component {
 
   static propTypes = {
-    onSubmit: PropTypes.func.isRequired,
     pathname: PropTypes.string.isRequired,
     error: PropTypes.string
   };
@@ -30,12 +29,8 @@ class App extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  error: state.youtube.error,
-  pathname: ownProps.location.pathname
+  pathname: ownProps.location.pathname,
+  error: state.youtube.error
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  onSubmit: url => dispatch(parseId(url))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps)(App);

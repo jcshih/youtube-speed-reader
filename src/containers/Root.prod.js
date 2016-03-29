@@ -7,7 +7,7 @@ class Root extends Component {
   static propTypes = {
     store: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
-    routes: PropTypes.object.isRequired
+    routes: PropTypes.func.isRequired
   };
 
   render() {
@@ -16,7 +16,7 @@ class Root extends Component {
     return (
       <Provider store={store}>
         <Router history={history}>
-          {routes}
+          {routes(store)}
         </Router>
       </Provider>
     );

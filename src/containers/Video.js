@@ -16,12 +16,6 @@ class Video extends Component {
     error: PropTypes.string
   };
 
-  componentWillMount() {
-    const { id, setId, fetchCaptions } = this.props;
-    setId(id);
-    fetchCaptions(id);
-  }
-
   _render() {
     const { id, isLoading, error, captions } = this.props;
     if (isLoading) {
