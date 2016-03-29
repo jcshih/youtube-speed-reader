@@ -1,7 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import {
+  Navbar, Nav, NavItem, Grid
+} from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 import UrlInputContainer from '../containers/UrlInputContainer';
+import styles from './App.css';
 
 class App extends Component {
 
@@ -13,16 +18,31 @@ class App extends Component {
   render() {
     return (
       <div>
-        <div>
-          <Link to='/'>home</Link>
-          <Link to='/about'>about</Link>
+        <Navbar fluid>
+          <Navbar.Header>
+            <Navbar.Brand>
+              <Link to='/'>YouTube Speed Reader</Link>
+            </Navbar.Brand>
+          </Navbar.Header>
+
           {this.props.pathname !== '/'
-            ? <UrlInputContainer />
-            : null}
-        </div>
-        <div>
+            ? (
+              <Nav className={styles.navCenter}>
+                <Navbar.Form>
+                  <UrlInputContainer />
+                </Navbar.Form>
+              </Nav>
+            ) : null}
+
+          <Nav pullRight>
+            <LinkContainer to='/about'>
+              <NavItem>about</NavItem>
+            </LinkContainer>
+          </Nav>
+        </Navbar>
+        <Grid>
           {this.props.children}
-        </div>
+        </Grid>
       </div>
     );
   }

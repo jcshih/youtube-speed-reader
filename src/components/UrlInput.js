@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import styles from './UrlInput.css';
 
 class UrlInput extends Component {
 
@@ -15,7 +16,10 @@ class UrlInput extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { url: '' };
+    this.state = {
+      url: '',
+      hideError: false
+    };
   }
 
   handleChange(e) {
@@ -26,7 +30,10 @@ class UrlInput extends Component {
     const { url } = this.state;
     const { handleSubmit, resetError } = this.props;
     if (e.key === 'Enter' && url.length > 0) {
-      this.setState({ url: '' });
+      this.setState({
+        url: '',
+        hideError: false
+      });
       resetError();
       handleSubmit(url);
     }
@@ -34,16 +41,26 @@ class UrlInput extends Component {
 
   render() {
     const { error, autoFocus } = this.props;
+    const hideErrorClass = this.state.hideError ? 'hidden' : '';
 
     return (
       <div>
         <input
+            className={styles.input}
             autoFocus={autoFocus}
+            placeholder="Enter a YouTube url."
             type="text"
             value={this.state.url}
             onChange={this.handleChange.bind(this)}
             onKeyPress={this.handleKeyPress.bind(this)} />
-        {error ? error : null}
+        {error
+          ? (
+            <div
+                className={`${styles.error} ${hideErrorClass}`}
+                onClick={() => this.setState({ hideError: true })}>
+              {error}
+            </div>
+          ) : null}
       </div>
     );
   }

@@ -1,0 +1,7 @@
+.navCenter {
+  position: absolute;
+  left: 50%;
+  right: auto;
+  text-align: center;
+  transform: translate(-50%, 0);
+}

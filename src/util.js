@@ -9,7 +9,7 @@ const extractVideoId = (url) => {
       const videoId = match[1];
       resolve(videoId);
     } else {
-      reject('Invalid YouTube URL.');
+      reject('Invalid YouTube url.');
     }
   });
 

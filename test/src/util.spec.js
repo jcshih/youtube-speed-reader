@@ -47,7 +47,7 @@ describe('util', () => {
       it(`rejects ${url}`, () => {
         return expect(
           extractVideoId(url)
-        ).to.be.rejectedWith('Invalid YouTube URL.');
+        ).to.be.rejectedWith('Invalid YouTube url.');
       });
     });
 

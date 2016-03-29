@@ -74,7 +74,7 @@ describe('youtube actions', () => {
 
   it('handles parseIdFromUrl failure', (done) => {
     const expectedActions = [
-      { type: SET_ID_ERROR, errorMessage: 'Invalid YouTube URL.' }
+      { type: SET_ID_ERROR, errorMessage: 'Invalid YouTube url.' }
     ];
     const store = mockStore({});
 
@@ -105,7 +105,7 @@ describe('youtube actions', () => {
   it('handles parseIdFromPath failure', (done) => {
     const expectedActions = [
       replace('/'),
-      { type: SET_ID_ERROR, errorMessage: 'Invalid YouTube URL.' }
+      { type: SET_ID_ERROR, errorMessage: 'Invalid YouTube url.' }
     ];
     const store = mockStore({});
 
