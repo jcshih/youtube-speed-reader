@@ -12,8 +12,11 @@ class Home extends Component {
           <h2>
             Scan YouTube videos quickly using captions.
           </h2>
+          <p>
+            Enter a YouTube url below or add "speedreader" to the domain of a YouTube url. <br /> ie. https://www.youtube.com/watch?v=IgKWPdJWuBQ -> https://www.youtubespeedreader.com/watch?v=IgKWPdJWuBQ
+          </p>
           <h4 style={{ marginBottom: '50px' }}>
-            <Link to="/v/HAnw168huqA">Try it out!</Link>
+            <Link to="/v/IgKWPdJWuBQ">Try it out!</Link>
           </h4>
           <UrlInputContainer autoFocus={true} />
         </div>

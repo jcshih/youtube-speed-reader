@@ -40,12 +40,19 @@ class App extends Component {
             <LinkContainer to='/about'>
               <NavItem>about</NavItem>
             </LinkContainer>
+            <LinkContainer to='/terms'>
+              <NavItem>terms</NavItem>
+            </LinkContainer>
+            <LinkContainer to='/privacy'>
+              <NavItem>privacy</NavItem>
+            </LinkContainer>
           </Nav>
         </Navbar>
 
         <Grid>
           {children}
 
+          <div style={{ marginTop: '50px' }}></div>
           {pathname !== '/' ? <Footer /> : null}
         </Grid>
       </div>
