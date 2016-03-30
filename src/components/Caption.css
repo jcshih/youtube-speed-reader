@@ -1,0 +1,21 @@
+.caption {
+  margin: 10px 0;
+}
+
+.time {
+  border: 1px solid black;
+  padding: 2px;
+}
+
+.time:hover {
+  cursor: pointer;
+}
+
+.activeTime {
+  font-weight: bold;
+  background: yellow;
+}
+
+.activeText {
+  font-weight: bold;
+}

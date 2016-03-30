@@ -1,7 +1,12 @@
 import React, { Component, PropTypes } from 'react';
+import { Row, Col } from 'react-bootstrap';
 import YouTube from 'react-youtube';
 import { delay } from '../util';
 import Captions from './Captions';
+
+const youTubeOpts = {
+  width: '100%'
+};
 
 class Player extends Component {
 
@@ -15,7 +20,8 @@ class Player extends Component {
     this.state = {
       player: null,
       playing: false,
-      currentTime: 0
+      currentTime: 0,
+      autoScroll: true
     };
   }
 
@@ -65,26 +71,44 @@ class Player extends Component {
     this.state.player.seekTo(time);
   }
 
+  toggleAutoScroll() {
+    this.setState({ autoScroll: !this.state.autoScroll });
+  }
+
   render() {
     const { id, captions } = this.props;
 
     return (
       <div>
-        <div>
-          <YouTube
-              ref="youtube"
-              videoId={id}
-              onReady={this.onReady.bind(this)}
-              onPlay={this.setPlaying.bind(this, true)}
-              onError={this.setPlaying.bind(this, false)}
-              onStateChange={this.onStateChange.bind(this)} />
-        </div>
-        <div>
-          <Captions
-              captions={captions}
-              currentTime={this.state.currentTime}
-              seekTo={this.seekTo.bind(this)} />
-        </div>
+        <Row>
+          <Col md={6}>
+            <YouTube
+                ref="youtube"
+                videoId={id}
+                opts={youTubeOpts}
+                onReady={this.onReady.bind(this)}
+                onPlay={this.setPlaying.bind(this, true)}
+                onError={this.setPlaying.bind(this, false)}
+                onStateChange={this.onStateChange.bind(this)} />
+            <div>
+              <label className="pull-right">
+                <input
+                    style={{ marginRight: '5px' }}
+                    type="checkbox"
+                    checked={this.state.autoScroll}
+                    onChange={this.toggleAutoScroll.bind(this)} />
+                auto-scroll
+              </label>
+            </div>
+          </Col>
+          <Col md={6}>
+            <Captions
+                captions={captions}
+                currentTime={this.state.currentTime}
+                autoScroll={this.state.autoScroll}
+                seekTo={this.seekTo.bind(this)} />
+          </Col>
+        </Row>
       </div>
     );
   }
