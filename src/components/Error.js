@@ -1,9 +1,12 @@
 import React, { PropTypes } from 'react';
+import { Row } from 'react-bootstrap';
 
 const Error = (props) => (
-  <div>
-    {props.error}
-  </div>
+  <Row className="text-center">
+    <h1>Error :(</h1>
+    <br />
+    <p>{props.error}</p>
+  </Row>
 );
 
 Error.propTypes = {
