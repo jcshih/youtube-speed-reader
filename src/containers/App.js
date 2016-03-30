@@ -2,20 +2,22 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import {
-  Navbar, Nav, NavItem, Grid
+  Navbar, Nav, NavItem, Grid, Row
 } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
-import UrlInputContainer from '../containers/UrlInputContainer';
+import UrlInputContainer from './UrlInputContainer';
+import Footer from '../components/Footer';
 import styles from './App.css';
 
 class App extends Component {
 
   static propTypes = {
-    pathname: PropTypes.string.isRequired,
-    error: PropTypes.string
+    pathname: PropTypes.string.isRequired
   };
 
   render() {
+    const { pathname, children } = this.props;
+
     return (
       <div>
         <Navbar fluid>
@@ -25,7 +27,7 @@ class App extends Component {
             </Navbar.Brand>
           </Navbar.Header>
 
-          {this.props.pathname !== '/'
+          {pathname !== '/'
             ? (
               <Nav className={styles.navCenter}>
                 <Navbar.Form>
@@ -40,8 +42,11 @@ class App extends Component {
             </LinkContainer>
           </Nav>
         </Navbar>
+
         <Grid>
-          {this.props.children}
+          {children}
+
+          {pathname !== '/' ? <Footer /> : null}
         </Grid>
       </div>
     );
@@ -49,8 +54,7 @@ class App extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  pathname: ownProps.location.pathname,
-  error: state.youtube.error
+  pathname: ownProps.location.pathname
 });
 
 export default connect(mapStateToProps)(App);

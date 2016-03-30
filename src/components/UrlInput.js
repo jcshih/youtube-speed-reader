@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import classNames from 'classnames';
 import styles from './UrlInput.css';
 
 class UrlInput extends Component {
@@ -56,7 +57,7 @@ class UrlInput extends Component {
         {error
           ? (
             <div
-                className={`${styles.error} ${hideErrorClass}`}
+                className={classNames(styles.error, hideErrorClass)}
                 onClick={() => this.setState({ hideError: true })}>
               {error}
             </div>
