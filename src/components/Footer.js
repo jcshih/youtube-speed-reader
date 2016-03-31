@@ -4,8 +4,7 @@ import styles from './Footer.css';
 
 const Footer = () => (
   <Navbar fixedBottom>
-    <div className={styles.ad}>
-      ad
+    <div className={styles.footer}>
     </div>
   </Navbar>
 );

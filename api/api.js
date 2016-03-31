@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import redis from 'redis';
 import {
   getCaptionInfo,
   getCaptions,
@@ -6,10 +7,36 @@ import {
   convertCaptionsToJson
 } from './youtube';
 
+const redisClient = redis.createClient({
+  retry_strategy: opts => {
+    if (opts.times_connected > 3) return undefined;
+    return 100;
+  },
+  enable_offline_queue: false
+});
+redisClient.on('error', err => {
+  console.log(`Redis Error: ${err}`);
+});
+
 const APIRouter = () => {
   const api = Router();
 
-  api.get('/captions/:id', (req, res) => {
+  api.get('/captions/:id', (req, res, next) => {
+    const id = req.params.id;
+
+    redisClient.get(id, (err, reply) => {
+      if (err) {
+        console.log(err);
+        return next();
+      }
+      if (reply) {
+        console.log(`cache hit ${id}`);
+        res.json(JSON.parse(reply));
+      } else {
+        return next();
+      }
+    });
+  }, (req, res) => {
     const id = req.params.id;
 
     getCaptionInfo(id)
@@ -18,12 +45,16 @@ const APIRouter = () => {
       })
       .then(([ ttsurl, captions ]) => {
         if (captions.length > 0) {
-          res.json(convertCaptionsToJson(captions));
+          const captionsJson = convertCaptionsToJson(captions);
+          redisClient.set(id, JSON.stringify(captionsJson));
+          res.json(captionsJson);
         } else {
           getAsr(ttsurl)
             .then(asr => {
               if (asr.length > 0) {
-                res.json(convertCaptionsToJson(asr));
+                const asrJson = convertCaptionsToJson(asr);
+                redisClient.set(id, JSON.stringify(asrJson));
+                res.json(asrJson);
               } else {
                 throw 'Failed to retrieve captions.';
               }
